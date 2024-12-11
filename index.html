@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Math Problem</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .problem {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="problem" id="mathProblem">Loading...</div>
+    <button class="button" onclick="generateProblem()">Generate New Problem</button>
+
+    <script>
+        function generateProblem() {
+            const firstNumber = Math.floor(Math.random() * (999 - 100 + 1)) + 100; // Random number between 100 and 999
+            const secondNumber = Math.floor(Math.random() * (999 - 100 + 1)) + 100; // Random number between 100 and 999
+            const prajh = Math.random() < 0.5 ? 1 : 2; // Randomly select 1 or 2
+
+            let problem;
+            if (prajh === 1) {
+                problem = `${firstNumber} + ${secondNumber} = ?`;
+            } else {
+                problem = `${firstNumber} - ${secondNumber} = ?`;
+            }
+
+            document.getElementById('mathProblem').textContent = problem;
+        }
+
+        // Generate an initial problem on page load
+        window.onload = generateProblem;
+    </script>
+</body>
+</html>
