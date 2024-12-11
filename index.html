@@ -17,9 +17,28 @@
             height: 100vh;
             background-color: #f4f4f4;
         }
+        .score {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            background-color: #007BFF;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
         .problem {
             font-size: 24px;
             margin-bottom: 20px;
+        }
+        .input-container {
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            width: 200px;
+            text-align: center;
         }
         .button {
             padding: 10px 20px;
@@ -36,10 +55,18 @@
     </style>
 </head>
 <body>
+    <div class="score" id="score">Score: 0</div>
     <div class="problem" id="mathProblem">Loading...</div>
+    <div class="input-container">
+        <input type="text" id="userAnswer" placeholder="Your answer here">
+    </div>
+    <button class="button" onclick="submitAnswer()">Submit Answer</button>
     <button class="button" onclick="generateProblem()">Generate New Problem</button>
 
     <script>
+        let correctAnswer = 0;
+        let score = 0;
+
         function generateProblem() {
             const firstNumber = Math.floor(Math.random() * (999 - 100 + 1)) + 100; // Random number between 100 and 999
             const secondNumber = Math.floor(Math.random() * (999 - 100 + 1)) + 100; // Random number between 100 and 999
@@ -48,11 +75,26 @@
             let problem;
             if (prajh === 1) {
                 problem = `${firstNumber} + ${secondNumber} = ?`;
+                correctAnswer = firstNumber + secondNumber;
             } else {
                 problem = `${firstNumber} - ${secondNumber} = ?`;
+                correctAnswer = firstNumber - secondNumber;
             }
 
             document.getElementById('mathProblem').textContent = problem;
+            document.getElementById('userAnswer').value = '';
+        }
+
+        function submitAnswer() {
+            const userAnswer = parseInt(document.getElementById('userAnswer').value, 10);
+            if (userAnswer === correctAnswer) {
+                alert('Correct!');
+                score++;
+            } else {
+                alert('Incorrect. The correct answer was ' + correctAnswer);
+            }
+            document.getElementById('score').textContent = `Score: ${score}`;
+            generateProblem();
         }
 
         // Generate an initial problem on page load
