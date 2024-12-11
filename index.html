@@ -151,6 +151,9 @@
     <button class="button" onclick="submitAnswer()">Submit Answer</button>
     <button class="button" onclick="generateProblem()">Generate New Problem</button>
 
+    <audio id="correctSound" src="https://example.com/correct.mp3"></audio>
+    <audio id="wrongSound" src="https://example.com/wrong.mp3"></audio>
+
     <script>
         let correctAnswer = 0;
         let score = 0;
@@ -176,11 +179,15 @@
 
         function submitAnswer() {
             const userAnswer = parseInt(document.getElementById('userAnswer').value, 10);
+            const correctSound = document.getElementById('correctSound');
+            const wrongSound = document.getElementById('wrongSound');
             totalQuestions++;
             if (userAnswer === correctAnswer) {
+                correctSound.play();
                 alert('Correct!');
                 score++;
             } else {
+                wrongSound.play();
                 alert('Incorrect. The correct answer was ' + correctAnswer);
             }
             document.getElementById('score').textContent = `Score: ${score} / ${totalQuestions}`;
