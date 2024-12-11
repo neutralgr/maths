@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Random Math Problem</title>
     <style>
+        :root {
+            --background-light: #f4f4f4;
+            --text-light: #000;
+            --background-dark: #121212;
+            --text-dark: #fff;
+            --primary-light: #007BFF;
+            --primary-dark: #1E90FF;
+        }
+
         body {
             font-family: Arial, sans-serif;
             text-align: center;
@@ -15,57 +24,85 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f4f4f4;
+            background-color: var(--background-light);
+            color: var(--text-light);
+            transition: background-color 0.3s, color 0.3s;
         }
+
+        .dark-mode {
+            background-color: var(--background-dark);
+            color: var(--text-dark);
+        }
+
         .score {
             position: absolute;
             top: 10px;
             right: 10px;
             font-size: 20px;
-            background-color: #007BFF;
+            background-color: var(--primary-light);
             color: white;
             padding: 5px 10px;
             border-radius: 5px;
         }
+
+        .dark-mode .score {
+            background-color: var(--primary-dark);
+        }
+
         .problem {
             font-size: 24px;
             margin-bottom: 20px;
         }
+
         .input-container {
             margin-bottom: 20px;
         }
+
         input {
             padding: 10px;
             font-size: 16px;
             width: 200px;
             text-align: center;
         }
+
         .button {
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
             border: none;
-            background-color: #007BFF;
+            background-color: var(--primary-light);
             color: white;
             border-radius: 5px;
+            margin: 5px;
         }
+
         .button:hover {
-            background-color: #0056b3;
+            background-color: var(--primary-dark);
+        }
+
+        .dark-mode .button {
+            background-color: var(--primary-dark);
+        }
+
+        .dark-mode .button:hover {
+            background-color: var(--primary-light);
         }
     </style>
 </head>
 <body>
-    <div class="score" id="score">Score: 0</div>
+    <div class="score" id="score">Score: 0 / 0</div>
     <div class="problem" id="mathProblem">Loading...</div>
     <div class="input-container">
         <input type="text" id="userAnswer" placeholder="Your answer here">
     </div>
     <button class="button" onclick="submitAnswer()">Submit Answer</button>
     <button class="button" onclick="generateProblem()">Generate New Problem</button>
+    <button class="button" onclick="toggleDarkMode()">Toggle Dark Mode</button>
 
     <script>
         let correctAnswer = 0;
         let score = 0;
+        let totalQuestions = 0;
 
         function generateProblem() {
             const firstNumber = Math.floor(Math.random() * (999 - 100 + 1)) + 100; // Random number between 100 and 999
@@ -87,14 +124,19 @@
 
         function submitAnswer() {
             const userAnswer = parseInt(document.getElementById('userAnswer').value, 10);
+            totalQuestions++;
             if (userAnswer === correctAnswer) {
                 alert('Correct!');
                 score++;
             } else {
                 alert('Incorrect. The correct answer was ' + correctAnswer);
             }
-            document.getElementById('score').textContent = `Score: ${score}`;
+            document.getElementById('score').textContent = `Score: ${score} / ${totalQuestions}`;
             generateProblem();
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
         }
 
         // Generate an initial problem on page load
