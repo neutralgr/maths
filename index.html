@@ -12,6 +12,8 @@
             --text-dark: #fff;
             --primary-light: #007BFF;
             --primary-dark: #1E90FF;
+            --button-radius: 12px;
+            --transition-duration: 0.3s;
         }
 
         body {
@@ -26,7 +28,7 @@
             height: 100vh;
             background-color: var(--background-light);
             color: var(--text-light);
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color var(--transition-duration), color var(--transition-duration);
         }
 
         .dark-mode {
@@ -41,8 +43,10 @@
             font-size: 20px;
             background-color: var(--primary-light);
             color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
+            padding: 8px 15px;
+            border-radius: var(--button-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color var(--transition-duration);
         }
 
         .dark-mode .score {
@@ -50,8 +54,10 @@
         }
 
         .problem {
-            font-size: 24px;
+            font-size: 28px;
             margin-bottom: 20px;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .input-container {
@@ -59,25 +65,36 @@
         }
 
         input {
-            padding: 10px;
-            font-size: 16px;
-            width: 200px;
+            padding: 12px;
+            font-size: 18px;
+            width: 220px;
             text-align: center;
+            border: 2px solid var(--primary-light);
+            border-radius: var(--button-radius);
+            outline: none;
+            transition: border-color var(--transition-duration);
+        }
+
+        input:focus {
+            border-color: var(--primary-dark);
         }
 
         .button {
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-size: 16px;
             cursor: pointer;
             border: none;
             background-color: var(--primary-light);
             color: white;
-            border-radius: 5px;
+            border-radius: var(--button-radius);
             margin: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color var(--transition-duration), transform var(--transition-duration);
         }
 
         .button:hover {
             background-color: var(--primary-dark);
+            transform: translateY(-2px);
         }
 
         .dark-mode .button {
@@ -87,9 +104,18 @@
         .dark-mode .button:hover {
             background-color: var(--primary-light);
         }
+
+        .toggle-mode {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 16px;
+        }
+
     </style>
 </head>
 <body>
+    <button class="button toggle-mode" onclick="toggleDarkMode()">Toggle Dark Mode</button>
     <div class="score" id="score">Score: 0 / 0</div>
     <div class="problem" id="mathProblem">Loading...</div>
     <div class="input-container">
@@ -97,7 +123,6 @@
     </div>
     <button class="button" onclick="submitAnswer()">Submit Answer</button>
     <button class="button" onclick="generateProblem()">Generate New Problem</button>
-    <button class="button" onclick="toggleDarkMode()">Toggle Dark Mode</button>
 
     <script>
         let correctAnswer = 0;
