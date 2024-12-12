@@ -123,13 +123,14 @@
         /* Styles for the notification */
         .notification {
             position: fixed;
-            top: 20px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            padding: 10px 20px;
-            background-color: #28a745;
+            padding: 15px 30px; /* Increased padding for a bigger bubble */
+            background-color: #28a745; /* Green for correct answer */
             color: white;
-            font-size: 16px;
+            font-size: 18px; /* Increased font size for better visibility */
+            font-weight: bold;
             border-radius: var(--button-radius);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
             opacity: 0;
@@ -140,6 +141,10 @@
         .notification.show {
             opacity: 1;
             visibility: visible;
+        }
+
+        .notification.incorrect {
+            background-color: #dc3545; /* Red for incorrect answer */
         }
 
     </style>
@@ -184,24 +189,33 @@
             totalQuestions++;
 
             let notificationText = '';
+            let isCorrect = false;
 
             if (userAnswer === correctAnswer) {
                 notificationText = 'Correct!';
                 score++;
+                isCorrect = true;
             } else {
                 notificationText = `Incorrect. The correct answer was ${correctAnswer}`;
             }
 
             document.getElementById('score').textContent = `Score: ${score} / ${totalQuestions}`;
-            showNotification(notificationText);
+            showNotification(notificationText, isCorrect);
             generateProblem();
         }
 
         // Show the notification
-        function showNotification(message) {
+        function showNotification(message, isCorrect) {
             const notification = document.getElementById('notification');
             notification.textContent = message;
             notification.classList.add('show');
+
+            // Remove the 'incorrect' class if the answer was correct
+            if (isCorrect) {
+                notification.classList.remove('incorrect');
+            } else {
+                notification.classList.add('incorrect');
+            }
 
             // Hide the notification after 3 seconds
             setTimeout(() => {
