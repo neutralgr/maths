@@ -50,6 +50,7 @@
             padding: 10px 20px;
             border-radius: var(--button-radius);
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            transition: background-color var(--transition-duration), transform var(--transition-duration);
         }
 
         .dark-mode .score {
@@ -90,12 +91,17 @@
             border-radius: var(--button-radius);
             margin: 5px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-            transition: background-color var(--transition-duration), transform var(--transition-duration);
+            transition: background-color var(--transition-duration), transform var(--transition-duration), box-shadow var(--transition-duration);
         }
 
         .button:hover {
             background-color: var(--primary-dark);
             transform: translateY(-3px);
+        }
+
+        .button:active {
+            transform: scale(0.98);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
 
         .dark-mode .button {
@@ -104,10 +110,6 @@
 
         .dark-mode .button:hover {
             background-color: var(--primary-light);
-        }
-
-        button:active {
-            transform: scale(0.98);
         }
 
     </style>
@@ -161,7 +163,9 @@
 
         // Toggle dark mode
         function toggleDarkMode() {
-            if (document.body.classList.contains('dark-mode')) {
+            const currentTheme = localStorage.getItem('theme') || 'dark-mode';
+
+            if (currentTheme === 'dark-mode') {
                 document.body.classList.remove('dark-mode');
                 document.body.classList.add('light-mode');
                 localStorage.setItem('theme', 'light-mode');
@@ -174,7 +178,7 @@
 
         // Apply saved theme on page load
         window.onload = () => {
-            const savedTheme = localStorage.getItem('theme') || 'dark-mode'; // Default to dark mode
+            const savedTheme = localStorage.getItem('theme') || 'dark-mode'; // Default to dark mode if none is set
             document.body.classList.add(savedTheme);
             generateProblem();
         };
