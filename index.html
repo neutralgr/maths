@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Math Problem</title>
+    <title>Math Problems</title>
     <style>
         :root {
             --background-light: #f4f4f4;
@@ -163,7 +163,7 @@
 
         // Toggle dark mode
         function toggleDarkMode() {
-            const currentTheme = localStorage.getItem('theme') || 'dark-mode';
+            const currentTheme = document.body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode';
 
             if (currentTheme === 'dark-mode') {
                 document.body.classList.remove('dark-mode');
