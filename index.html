@@ -112,6 +112,36 @@
             background-color: var(--primary-light);
         }
 
+        /* Position the toggle button at the top left */
+        .toggle-mode {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+        }
+
+        /* Styles for the notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            border-radius: var(--button-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .notification.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
     </style>
 </head>
 <body class="dark-mode"> <!-- Default theme is dark mode -->
@@ -121,6 +151,9 @@
     <input type="text" id="userAnswer" placeholder="Your answer here">
     <button class="button" onclick="submitAnswer()">Submit Answer</button>
     <button class="button" onclick="generateProblem()">Generate New Problem</button>
+
+    <!-- Notification container -->
+    <div id="notification" class="notification"></div>
 
     <script>
         let correctAnswer = 0;
@@ -150,15 +183,30 @@
             const userAnswer = parseInt(document.getElementById('userAnswer').value, 10);
             totalQuestions++;
 
+            let notificationText = '';
+
             if (userAnswer === correctAnswer) {
-                alert('Correct!');
+                notificationText = 'Correct!';
                 score++;
             } else {
-                alert(`Incorrect. The correct answer was ${correctAnswer}`);
+                notificationText = `Incorrect. The correct answer was ${correctAnswer}`;
             }
 
             document.getElementById('score').textContent = `Score: ${score} / ${totalQuestions}`;
+            showNotification(notificationText);
             generateProblem();
+        }
+
+        // Show the notification
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+
+            // Hide the notification after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
         }
 
         // Toggle dark mode
