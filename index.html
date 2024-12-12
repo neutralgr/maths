@@ -14,8 +14,8 @@
             --primary-dark: #1E90FF;
             --button-radius: 12px;
             --transition-duration: 0.3s;
-            --success-color: #4CAF50;
-            --error-color: #FF5722;
+            --alert-success: #4caf50;
+            --alert-error: #f44336;
         }
 
         body {
@@ -32,11 +32,6 @@
             color: var(--text-dark);
             transition: background-color var(--transition-duration), color var(--transition-duration);
             overflow: hidden;
-        }
-
-        .dark-mode {
-            background-color: var(--background-dark);
-            color: var(--text-dark);
         }
 
         .score {
@@ -114,10 +109,6 @@
             transform: translateY(-3px);
         }
 
-        button:active {
-            transform: scale(0.98);
-        }
-
         .toggle-mode {
             position: absolute;
             top: 10px;
@@ -125,31 +116,37 @@
             font-size: 16px;
         }
 
-        .notification {
+        .toggle-mode:hover {
+            transform: scale(1.1);
+        }
+
+        .alert {
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             padding: 15px 30px;
-            font-size: 18px;
             border-radius: var(--button-radius);
+            font-size: 18px;
             color: white;
-            background-color: var(--success-color);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             opacity: 0;
-            pointer-events: none;
-            transition: opacity var(--transition-duration), transform var(--transition-duration);
+            visibility: hidden;
+            transition: opacity var(--transition-duration), visibility var(--transition-duration);
         }
 
-        .notification.show {
+        .alert.success {
+            background-color: var(--alert-success);
+        }
+
+        .alert.error {
+            background-color: var(--alert-error);
+        }
+
+        .alert.show {
             opacity: 1;
-            transform: translateX(-50%) translateY(0);
-            pointer-events: auto;
+            visibility: visible;
         }
-
-        .notification.error {
-            background-color: var(--error-color);
-        }
-
     </style>
 </head>
 <body>
@@ -161,8 +158,7 @@
     </div>
     <button class="button" onclick="submitAnswer()">Submit Answer</button>
     <button class="button" onclick="generateProblem()">Generate New Problem</button>
-
-    <div class="notification" id="notification"></div>
+    <div class="alert" id="alertBox"></div>
 
     <script>
         let correctAnswer = 0;
@@ -170,12 +166,12 @@
         let totalQuestions = 0;
 
         function generateProblem() {
-            const firstNumber = Math.floor(Math.random() * (999 - 100 + 1)) + 100; // Random number between 100 and 999
-            const secondNumber = Math.floor(Math.random() * (999 - 100 + 1)) + 100; // Random number between 100 and 999
-            const prajh = Math.random() < 0.5 ? 1 : 2; // Randomly select 1 or 2
+            const firstNumber = Math.floor(Math.random() * (999 - 100 + 1)) + 100;
+            const secondNumber = Math.floor(Math.random() * (999 - 100 + 1)) + 100;
+            const isAddition = Math.random() < 0.5;
 
             let problem;
-            if (prajh === 1) {
+            if (isAddition) {
                 problem = `${firstNumber} + ${secondNumber} = ?`;
                 correctAnswer = firstNumber + secondNumber;
             } else {
@@ -189,32 +185,32 @@
 
         function submitAnswer() {
             const userAnswer = parseInt(document.getElementById('userAnswer').value, 10);
-            const notification = document.getElementById('notification');
+            const alertBox = document.getElementById('alertBox');
             totalQuestions++;
 
             if (userAnswer === correctAnswer) {
                 score++;
-                showNotification('Correct!', 'success');
+                showAlert('Correct!', 'success');
             } else {
-                showNotification(`Incorrect. The correct answer was ${correctAnswer}`, 'error');
+                showAlert(`Incorrect. The correct answer was ${correctAnswer}`, 'error');
             }
 
             document.getElementById('score').textContent = `Score: ${score} / ${totalQuestions}`;
             generateProblem();
         }
 
-        function showNotification(message, type) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.className = `notification show ${type === 'error' ? 'error' : ''}`;
-
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 2000);
-        }
-
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
+        }
+
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.textContent = message;
+            alertBox.className = `alert ${type} show`;
+
+            setTimeout(() => {
+                alertBox.className = `alert ${type}`;
+            }, 2000);
         }
 
         // Generate an initial problem on page load
